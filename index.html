@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juritix Pro</title>
+    <style>
+        :root {
+            --bg: #FFFFFF;
+            --text: #000000;
+            --card-bg: #F9F9F9;
+            --border: #EEEEEE;
+            --primary: #0047AB;
+            --accent: #FF9933; 
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --text: #FFFFFF;
+            --card-bg: #1A1A1A;
+            --border: #333333;
+            --primary: #3B82F6;
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); transition: background 0.3s ease; overflow: hidden; }
+        
+        .view { display: none; min-height: 100vh; width: 100vw; flex-direction: column; position: absolute; top: 0; left: 0; }
+        .view.active { display: flex; }
+
+        /* Splash & Shimmer */
+        #splash { background: #000; justify-content: center; align-items: center; color: white; }
+        .shimmer {
+            font-size: 3rem; font-weight: 200; letter-spacing: 12px;
+            background: linear-gradient(90deg, #333 25%, #fff 50%, #333 75%);
+            background-size: 200% 100%; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; animation: shimmer 2s infinite linear;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Disclaimer */
+        #disclaimer { background: var(--bg); justify-content: center; align-items: center; padding: 40px; text-align: center; }
+
+        /* Header Components */
+        .header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+        .theme-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); padding: 0; line-height: 1; }
+        .back-btn { background: none; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; }
+
+        /* Dashboard grid */
+        .vc-container { padding: 20px 20px 0 20px; }
+        .vc-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 71, 171, 0.2); }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; overflow-y: auto; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 25px 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+
+        /* Sub-menus & Forms */
+        .list { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .list-item { background: var(--card-bg); padding: 18px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.9rem; cursor: pointer; }
+        .form-container { padding: 30px 20px; display: flex; flex-direction: column; gap: 15px; text-align: center; }
+        input { padding: 15px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); outline: none; }
+        .submit-btn { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        /* Sorry Page */
+        .sorry-container { padding: 40px 20px; text-align: center; display: flex; flex-direction: column; justify-content: center; flex: 1; }
+        .sorry-text { font-size: 1.1rem; font-weight: 500; max-width: 300px; margin: 0 auto; line-height: 1.6; }
+
+        /* Election Ad Button */
+        .ad-container { padding: 0 20px 20px 20px; margin-top: auto; }
+        .ad-btn { 
+            width:100%; background: var(--accent); color: white; border: none; padding: 18px; 
+            border-radius: 12px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; 
+            letter-spacing: 1px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <div id="splash" class="view active"><h1 class="shimmer">JURITIX</h1></div>
+
+    <div id="disclaimer" class="view">
+        <div style="max-width: 400px;">
+            <h2 style="font-weight: 300;">Testing Version</h2>
+            <p style="color: #666; font-size: 0.9rem;">Juritix is currently in beta. AI-assisted petition drafting for verified advocates is coming soon.</p>
+        </div>
+    </div>
+
+    <div id="home" class="view">
+        <div class="header"><b>JURITIX</b><button class="theme-btn" id="themeIcon" onclick="toggleTheme()">?</button></div>
+        <div class="vc-container">
+            <button class="vc-btn" onclick="window.open('https://delhidistrictcourts.nic.in/lockdownfiling', '_blank')">Vcs link</button>
+        </div>
+        <div class="grid">
+            <div class="card" onclick="show('sc-view')">???<span style="font-size:0.8rem; margin-top:10px;">Supreme Court</span></div>
+            <div class="card" onclick="show('sorry-view')">??<span style="font-size:0.8rem; margin-top:10px;">Delhi High Court</span></div>
+            <div class="card" onclick="show('sorry-view')">??<span style="font-size:0.8rem; margin-top:10px;">District Courts</span></div>
+            <div class="card" onclick="show('sorry-view')">??<span style="font-size:0.8rem; margin-top:10px;">New Criminal Law</span></div>
+            <div class="card" onclick="show('sorry-view')">??<span style="font-size:0.8rem; margin-top:10px;">Bare Act</span></div>
+            <div class="card" onclick="show('ai-view')">?<span style="font-size:0.8rem; margin-top:10px;">AI-Drafting</span></div>
+        </div>
+        <div class="ad-container">
+            <button class="ad-btn" onclick="openMail()">TAP THIS TO PUT ELECTION ADVERTISEMENT</button>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbypaKt5jsmHiJgh0Cc9uetVYErpdpDN9TzqZv6KaymqDsPCPbIchH1JD62TL_zq3kE_/exec'; 
+
+        function show(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            icon.innerHTML = isDark ? '?' : '¤';
+        }
+
+        // Optimized Mail Function
+        function openMail() {
+            const recipient = "singh80harshit@gmail.com";
+            const subject = encodeURIComponent("Election Advertisement Inquiry - Juritix");
+            const body = encodeURIComponent("Hi Juritix Team,\n\nI am interested in placing an advertisement in the app. Please share the details.");
+            window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        }
+
+        function submitToSheet() {
+            const name = document.getElementById('userName').value;
+            const id = document.getElementById('barId').value;
+            if(!name || !id) return alert("Please fill all details");
+            const btn = document.querySelector('.submit-btn');
+            btn.innerHTML = "Registering...";
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ name: name, id: id }),
+                headers: { 'Content-Type': 'application/json' }
+            }).then(() => {
+                document.getElementById('success-msg').style.display = 'block';
+                btn.style.display = 'none';
+                document.getElementById('userName').style.display = 'none';
+                document.getElementById('barId').style.display = 'none';
+            });
+        }
+
+        window.onload = () => {
+            setTimeout(() => { 
+                show('disclaimer'); 
+                setTimeout(() => { show('home'); }, 3000); 
+            }, 2000); 
+        };
+    </script>
+</body>
+</html>
